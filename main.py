@@ -1,17 +1,17 @@
 # первая прямая
-X00 = 2
-Y00 = 1
-Z00 = 0
-X01 = 7
-Y01 = 1
+X00 = 0
+Y00 = 0
+Z00 = 4
+X01 = 0
+Y01 = 0
 Z01 = 0
 # вторая прямая
-X10 = 3
-Y10 = 1
-Z10 = 1
-X11 = 3
-Y11 = 1
-Z11 = 2
+X10 = 0
+Y10 = 2
+Z10 = 0
+X11 = 2
+Y11 = 0
+Z11 = 0
 
 # вектор первой прямой
 DX0 = X01 - X00
@@ -45,7 +45,7 @@ I += C
 # Принадлежность точки пересечения к первой прямой
 def belong0(X, Y, Z):
     Q1 = (X - X00) * DY0
-    Q2 = (Y - Y00) * DY0
+    Q2 = (Y - Y00) * DX0
     Q3 = (Y - Y00) * DZ0
     Q4 = (Z - Z00) * DY0
     return Q1 == Q2 and Q3 == Q4
@@ -54,7 +54,7 @@ def belong0(X, Y, Z):
 # Принадлежность точки пересечения ко второй прямой
 def belong1(X, Y, Z):
     Q1 = (X - X10) * DY1
-    Q2 = (Y - Y10) * DY1
+    Q2 = (Y - Y10) * DX1
     Q3 = (Y - Y10) * DZ1
     Q4 = (Z - Z10) * DY1
     return Q1 == Q2 and Q3 == Q4
@@ -65,7 +65,7 @@ def s_to_p(S):
     X = X10 + DX1 * S
     Y = Y10 + DY1 * S
     Z = Z10 + DZ1 * S
-    print(Z10, DZ1, S)
+    print(X, Y, Z)
     if belong0(X, Y, Z):
         if belong_section(X, Y, Z):
             print("on section")
@@ -73,6 +73,7 @@ def s_to_p(S):
         else:
             print("on line, not on section")
             print(X, Y, Z)
+
     else:
         print("no intersection points, crossing lines")
 
@@ -82,6 +83,7 @@ def t_to_p(T):
     X = X00 + DX0 * T
     Y = Y00 + DY0 * T
     Z = Z00 + DZ0 * T
+    print(X,Y,Z)
     if belong1(X, Y, Z):
         if belong_section(X, Y, Z):
             print("on section")
@@ -90,7 +92,18 @@ def t_to_p(T):
             print("on line, not on section")
             print(X, Y, Z)
     else:
-        print("no intersection points, crossing lines")
+        X = X01 + DX0 * T
+        Y = Y01 + DY0 * T
+        Z = Z01 + DZ0 * T
+        if belong1(X, Y, Z):
+            if belong_section(X, Y, Z):
+                print("on section  ASS")
+                print(X, Y, Z)
+            else:
+                print("on line, not on section ASS")
+                print(X, Y, Z)
+        else:
+            print("no intersection points, crossing lines")
 
 
 def between(A, B, C):
@@ -101,42 +114,21 @@ def between(A, B, C):
 def belong_section(X, Y, Z):
     return between(X00, X, X01) and between(Y00, Y, Y01) and between(Z00, Z, Z01)
 
+det =  D*H - E*G
+if det != 0:
+    detASS= F*H-I*E
+    T = detASS/det
+    t_to_p(T)
 
-if D == 0:
-    if E == 0:
-        if F == 0:
-            if G == 0:
-                if H == 0:
-                    if I == 0:
-                        print("infinite number of intersection points")
-                    else:
-                        print("no intersection points")
-                else:
-                    S = I / H
-                    s_to_p(S)
-            else:
-                if H == 0:
-                    T = I / G
-                    t_to_p(T)
-                else:
-                    print("infinite number of intersection points")
-        else:
-            print("no intersection points")
-    else:
-        S = F / E
-        if H * S == I:
-            s_to_p(S)
-        else:
-            print("no intersection points")
 else:
-    K = G / D
-    H -= E * K
-    I -= F * K
-    if H == 0:
-        if I == 0:
-            print("infinite number of intersection points")
-        else:
-            print("no intersection points")
+    v = DX0 * DX1 + DY0 * DY1 + DZ0 * DZ1
+    l0 = (DX0**2+DY0**2+DZ0**2)**0.5
+    l1 = (DX1 ** 2 + DY1 ** 2 + DZ1 ** 2) ** 0.5
+    cos = v / l0 / l1
+    print(l0, l1)
+    if abs(1-cos) < 0.00000000001:
+        print("same lines")
+
     else:
-        S = I / H
-        s_to_p(S)
+        print(cos)
+        print("no intersection points111")
