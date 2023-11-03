@@ -133,6 +133,14 @@ CLAUSES
         write(X," ",Y," ",Z), nl.
 
 
+t_to_p(T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
+        X = X00 + DX0 * T,
+        Y = Y00 + DY0 * T,
+        Z = Z00 + DZ0 * T,
+        belong1(X,Y,Z,X10,Y10,Z10,X11,Y11,Z11,DX1,DY1,DZ1),
+        write("on line not on section"), nl,
+        write(X," ",Y," ",Z), nl.
+
 
    t_to_p(T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
         write("no intersection points, crossing lines"), nl.
