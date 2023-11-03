@@ -17,26 +17,26 @@ CLAUSES
         %A
         XA = 0,
         YA = 0,
-        ZA = 4,
+        ZA = 3,
         %B
         XB = 0,
         YB = 0,
         ZB = 0,
         %C
         XC = 0,
-        YC = 2,
+        YC = 3,
         ZC = 0,
         %D
-        XD = 2,
+        XD = 3,
         YD = 0,
         ZD = 0,
         %line
         X10 = 0,
-        Y10 = 2,
+        Y10 = 0,
         Z10 = 0,
-        X11 = 2,
+        X11 = 0,
         Y11 = 0,
-        Z11 = 0,
+        Z11 = 1,
 
         %AB && line
         write("AB && line"), nl,
@@ -98,13 +98,27 @@ CLAUSES
         T = DET_T/DET,
         t_to_p(T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1).
 
+
     kramer(DET,DET_T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
         V = DX0 * DX1 + DY0 * DY1 + DZ0 * DZ1,
         L0 = sqrt(DX0*DX0+DY0*DY0+DZ0*DZ0),
         L1 = sqrt(DX1*DX1+DY1*DY1+DZ1*DZ1),
-        PUKPUK =1 - (V / L0) / L1,
-        abs(PUKPUK)<0.00000000001,!,
+        PUKPUK =(V / L0) / L1,
+        PUKPUKPUK= 1-abs(PUKPUK),
+        PUKPUKPUK<0.0000001,
+        belong_section(X10, Y10, Z10,X00,Y00,Z00,X01,Y01,Z01),!,
         write("infinite number of intersection points"), nl.
+
+
+
+    kramer(DET,DET_T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
+        V = DX0 * DX1 + DY0 * DY1 + DZ0 * DZ1,
+        L0 = sqrt(DX0*DX0+DY0*DY0+DZ0*DZ0),
+        L1 = sqrt(DX1*DX1+DY1*DY1+DZ1*DZ1),
+        PUKPUK =(V / L0) / L1,
+        PUKPUKPUK= 1-abs(PUKPUK),
+        PUKPUKPUK<0.0000001,!,
+        write("parallel lines"), nl.
 
     kramer(DET,DET_T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
         write("no intersection points"), nl.
@@ -118,13 +132,7 @@ CLAUSES
         write("on section"), nl,
         write(X," ",Y," ",Z), nl.
 
-   t_to_p(T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
-        X = X00 + DX0 * T,
-        Y = Y00 + DY0 * T,
-        Z = Z00 + DZ0 * T,
-        belong1(X,Y,Z,X10,Y10,Z10,X11,Y11,Z11,DX1,DY1,DZ1),
-        write("on line not on section"), nl,
-        write(X," ",Y," ",Z), nl.
+
 
    t_to_p(T,X00,Y00,Z00,X01,Y01,Z01,X10,Y10,Z10,X11,Y11,Z11,DX0,DY0,DZ0,DX1,DY1,DZ1):-
         write("no intersection points, crossing lines"), nl.
