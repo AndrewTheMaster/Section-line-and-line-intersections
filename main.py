@@ -1,17 +1,17 @@
 # первая прямая
 X00 = 0
 Y00 = 0
-Z00 = 4
+Z00 = 0
 X01 = 0
 Y01 = 0
-Z01 = 0
+Z01 = 5
 # вторая прямая
-X10 = 0
-Y10 = 2
+X10 = 5
+Y10 = 0
 Z10 = 0
-X11 = 2
+X11 = 5
 Y11 = 0
-Z11 = 0
+Z11 = 5
 
 # вектор первой прямой
 DX0 = X01 - X00
@@ -125,10 +125,12 @@ else:
     l0 = (DX0**2+DY0**2+DZ0**2)**0.5
     l1 = (DX1 ** 2 + DY1 ** 2 + DZ1 ** 2) ** 0.5
     cos = v / l0 / l1
-    print(l0, l1)
     if abs(1-cos) < 0.00000000001:
-        print("same lines")
+        if belong_section(X10,Y10,Z10):
+            print("same lines")
+        else:
+            print("parallel lines")
 
     else:
         print(cos)
-        print("no intersection points111")
+        print("no intersection points")
